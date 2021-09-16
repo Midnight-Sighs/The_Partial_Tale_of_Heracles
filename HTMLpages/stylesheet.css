@@ -10,7 +10,6 @@ body {
     "footer footer";
     grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    padding: 20px;
 }
 
 header, buttonBox, textBox, footer{
@@ -44,8 +43,16 @@ header, buttonBox, textBox, footer{
 }
 #buttonBox > p{
     color: goldenrod;
-    margin: 5px;
+    margin-left: 5px;
+    margin-right:5px;
+    text-align: center;
 }
+
+#buttonBoxPicture{ 
+    height: 300px;
+    width: 300px;
+    object-fit:scale-down;
+ }
 
 #textBox{
     grid-area: textBox;
@@ -61,15 +68,22 @@ header, buttonBox, textBox, footer{
 #textBox > p{
     color: goldenrod;
     margin: 5px;
+    text-align:justify;
+    padding: 10px;
 }
 
 #footer{
     grid-area: footer;
+    grid-row: 100px;
     border: solid 5px rgb(177, 88, 6);
     border-radius: 20px;
     margin: 20px;
     background-color: rgb(20, 20, 65);
     color: goldenrod;
+}
+#footer >p {
+    color: goldenrod;
+    text-align:center;
 }
 
 #buttonOne{
@@ -77,6 +91,9 @@ header, buttonBox, textBox, footer{
     color: goldenrod;
     border: solid 2 px goldenrod;
     border-radius: 15px;
+    height: 45px;
+    width: 100px;
+    margin: 30px;
 }
 
 #buttonTwo{
@@ -84,4 +101,7 @@ header, buttonBox, textBox, footer{
     color: goldenrod;
     border: solid 2 px goldenrod;
     border-radius: 15px;
+    height: 45px;
+    width: 100px;
+    margin:30px;
 }

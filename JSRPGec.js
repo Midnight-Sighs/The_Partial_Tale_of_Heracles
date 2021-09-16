@@ -28,9 +28,11 @@ class Character {
         this.hasWeapon = false;
     }
 }
-let herc = new Character("Hercules", 10, 5, 15, 0, 0);
+let hercLvlOne = new Character("Heracles", 10, 5, 15, 0, 0);
 let imp = new Character("Underworld Imp", 5, 2, 5, 0);
 let crab = new Character("Giant Crab", 15, 0, 8, 15);
+let wildMenOne = new Character("Unknown Fighter", 10, 5, 2, 5, 0);
+let wildMenTwo = new Character("Unknown Armed Peasant", 5, 5, 1, 3, 0)
 //#endregion
 
 //Attacks
@@ -104,9 +106,21 @@ let helm = new Armors("Helm", 8);
 //Utility Functions
 //#region 
 
-function welcome(){
-    alert("Welcome!  Many have heard the feats of Hercules and many have scribed the feats in various ways.  I'm here to tell you today that you MAY not have heard it right.  We're going to adventure through some of the 12 Labours that Hercules endured for his cousin, King Eurystheus.  \n\n As you you will have to use buttons to control the flow of things.  Do you understand?  Select yes or no.")
+function welcomeNo(){
+    alert("We're sorry that you think you don't understand how to use yes and no buttons!  However, you just pushed the no button!  I think you should try that again.")
 }
+function welcomeYes(){
+    window.location.href = "../HTMLpages/storyOne.html";
+}
+function loadPageChapterOneEncounterOne(){
+    window.location.href = "../HTMLpages/chapterOneWildMen.html"
+}
+//#endregion
+
+//Nemean Lion
+//#region 
+
+
 
 //#endregion
 
