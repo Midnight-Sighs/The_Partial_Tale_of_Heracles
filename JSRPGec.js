@@ -3,7 +3,7 @@
 // Features:  
 // As a developer, I want to make at least five commits with descriptive messages. 
 // As a user, I want an engaging story to be told using alerts. 
-// As a user, I want Hercules (and each enemy), to have health, attack power, and an array of attack names saved in an object literal.
+// XXXAs a user, I want Hercules (and each enemy), to have health, attack power, and an array of attack names saved in an object literal.
 // As a user, I want the ability to select Hercules’ attack using a menu prompt.
 // As a user, I want the foe’s attack to be chosen at random.
 // As a user, I want the results of each attack to be logged in the console. 
@@ -11,6 +11,8 @@
 // As a developer, I want my RunGame() function to call my other functions in a logical order that will determine game flow.
 // As a developer, I want all of my functions to have a Single Responsibility. Remember, each function should do just one thing! 
 
+//Characters
+//#region 
 class Character {
     constructor(name, vitality, speed, attackPower, armor) {
         this.name = name;
@@ -26,6 +28,11 @@ class Character {
         this.hasWeapon = false;
     }
 }
+let herc = new Character("Hercules", 10, 5, 15, 0, 0);
+let imp = new Character("Underworld Imp", 5, 2, 5, 0);
+let crab = new Character("Giant Crab", 15, 0, 8, 15);
+//#endregion
+
 //Attacks
 //#region
 class Attacks{
@@ -94,11 +101,42 @@ let chestPlate = new Armors("Chest Plate", 15);
 let helm = new Armors("Helm", 8);
 //#endregion
 
-//Characters
+//Utility Functions
 //#region 
-let herc = new Character("Hercules", 10, 5, 15, 0, 0);
-let imp = new Character("Underworld Imp", 5, 2, 5, 0);
-let crab = new Character("Giant Crab", 15, 0, 8, 15);
+
+function welcome(){
+    alert("Welcome!  Many have heard the feats of Hercules and many have scribed the feats in various ways.  I'm here to tell you today that you MAY not have heard it right.  We're going to adventure through some of the 12 Labours that Hercules endured for his cousin, King Eurystheus.  \n\n As you you will have to use buttons to control the flow of things.  Do you understand?  Select yes or no.")
+}
+
 //#endregion
 
+//Game Flow
+//#region 
+
+//#endregion
+
+//Validations
+//#region 
+function promptFor(question, valid){
+    let isValid;
+    do{
+      var response = prompt(question).trim();
+      isValid = valid(response);
+    } while(response === ""  ||  isValid === false)
+    return response;
+  }
+
+function yesNo(input){
+    if(input.toLowerCase() == "yes" || input.toLowerCase() == "no"){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+function autoValid(){
+    return true;
+  }
+//#endregion
 

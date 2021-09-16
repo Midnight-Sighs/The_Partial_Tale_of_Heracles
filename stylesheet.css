@@ -1,0 +1,87 @@
+html{
+    background-color: black;
+}
+
+body {
+    display: grid;
+    grid-template-areas:
+    "header header"
+    "buttonBox textBox"
+    "footer footer";
+    grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 20px;
+}
+
+header, buttonBox, textBox, footer{
+    padding: 30px;
+}
+
+#header{
+    grid-area: header;
+    border: solid 5px rgb(177, 88, 6);
+    border-radius: 20px;
+    margin: 20px;
+    background-color: rgb(20, 20, 65);
+    color: goldenrod;
+}
+#header >p{
+    text-align: center;
+    color: gold;
+    font-size: 48px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#buttonBox{
+    grid-area: buttonBox;
+    border: solid 5px rgb(177, 88, 6);
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-right: 5px;
+    background-color: rgb(20, 20, 65);
+}
+#buttonBox > p{
+    color: goldenrod;
+    margin: 5px;
+}
+
+#textBox{
+    grid-area: textBox;
+    border: solid 5px rgb(177, 88, 6);
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 20px;
+    background-color: rgb(20, 20, 65);
+    color: goldenrod;
+}
+#textBox > p{
+    color: goldenrod;
+    margin: 5px;
+}
+
+#footer{
+    grid-area: footer;
+    border: solid 5px rgb(177, 88, 6);
+    border-radius: 20px;
+    margin: 20px;
+    background-color: rgb(20, 20, 65);
+    color: goldenrod;
+}
+
+#buttonOne{
+    background-color: black;
+    color: goldenrod;
+    border: solid 2 px goldenrod;
+    border-radius: 15px;
+}
+
+#buttonTwo{
+    background-color: black;
+    color: goldenrod;
+    border: solid 2 px goldenrod;
+    border-radius: 15px;
+}
