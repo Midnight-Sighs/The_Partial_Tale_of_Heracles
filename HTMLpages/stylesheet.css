@@ -8,12 +8,8 @@ body {
     "header header"
     "buttonBox textBox"
     "footer footer";
-    grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-rows: 200px 1fr 100px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-header, buttonBox, textBox, footer{
-    padding: 30px;
 }
 
 #header{
@@ -21,10 +17,10 @@ header, buttonBox, textBox, footer{
     border: solid 5px rgb(177, 88, 6);
     border-radius: 20px;
     margin: 20px;
-    background-color: rgb(20, 20, 65);
-    color: goldenrod;
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 24, 66) 100%);
 }
-#header >p{
+#header >p {
     text-align: center;
     color: gold;
     font-size: 48px;
@@ -38,14 +34,16 @@ header, buttonBox, textBox, footer{
     margin-top: 20px;
     margin-bottom: 5px;
     margin-left: 20px;
-    margin-right: 5px;
-    background-color: rgb(20, 20, 65);
+    margin-right: 10px;
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 24, 66) 100%);
 }
 #buttonBox > p{
     color: goldenrod;
     margin-left: 5px;
     margin-right:5px;
     text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #buttonBoxPicture{ 
@@ -60,16 +58,21 @@ header, buttonBox, textBox, footer{
     border-radius: 5px;
     margin-top: 20px;
     margin-bottom: 5px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 20px;
-    background-color: rgb(20, 20, 65);
     color: goldenrod;
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 24, 66) 100%);
 }
+
 #textBox > p{
     color: goldenrod;
     margin: 5px;
     text-align:justify;
-    padding: 10px;
+    padding: 20px;
+    text-size: 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-variant: small-caps;
 }
 
 #footer{
@@ -78,8 +81,9 @@ header, buttonBox, textBox, footer{
     border: solid 5px rgb(177, 88, 6);
     border-radius: 20px;
     margin: 20px;
-    background-color: rgb(20, 20, 65);
     color: goldenrod;
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(0, 24, 66) 100%);
 }
 #footer >p {
     color: goldenrod;
