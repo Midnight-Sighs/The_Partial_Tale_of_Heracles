@@ -3,6 +3,8 @@ This little game entails the adventures through some of the labours that Hercule
 
 ### Edits/Commits Below
 
+
+    - First encounter is working fine.  Pummel/Tackle is functioning correctly.  Added the beginning for the next part of chapter one.  Tested, did some fine tuning.  Added level up/heal for after encounter.
     - I changed how I wanted the HTML and CSS to work and function entirely.  Yay for brains that work best as you're about to fall asleep.  
     - Set up CSS and HTML files
     - Changed from Hercules to the more traditional Heracles before I got too far!

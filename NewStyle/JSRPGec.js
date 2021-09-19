@@ -1,19 +1,8 @@
-// You are Hercules, the greatest of the Greek Heroes! You have been tasked by King Eurystheus to slay the vicious Nemean Lion, defeat the impossible nine-headed Lernaean Hydra, and capture the guard dog of the underworld—Cerberus.
-$(document).ready(function() {
-    $('.chapter[data-type=CH01]').on('click', function(){
-        $(this).toggleClass('active');
-    });
-});
-// Features:  
-// As a developer, I want to make at least five commits with descriptive messages. 
-// As a user, I want an engaging story to be told using alerts. 
-// XXX As a user, I want Hercules (and each enemy), to have health, attack power, and an array of attack names saved in an object literal.
-// XXX As a user, I want the ability to select Hercules’ attack using a menu prompt.
-// XXX As a user, I want the foe’s attack to be chosen at random.
-// As a user, I want the results of each attack to be logged in the console. 
-// As a developer, I want to use an Attack() function that will terminate when Hercules or an enemy’s health reaches zero. 
-// As a developer, I want my RunGame() function to call my other functions in a logical order that will determine game flow.
-// As a developer, I want all of my functions to have a Single Responsibility. Remember, each function should do just one thing! 
+// $(document).ready(function() {
+//     $('.chapter[data-type=CH01-2]').on('click', function(){
+//         $(this).toggleClass('active');
+//     });
+// });
 
 //HTML Functions
 //#region 
@@ -35,19 +24,30 @@ function welcomeNo(){
 }
 function continueToChapterOne(){
     $(document).ready(function() {
-        $('.chapter[data-type="CH01"]').on('click', function(){
+        $('.chapter[data-type="CH01-1"]').on('click', function(){
             $(this).toggleClass('active');
         });
     });
-    alert("You may now proceed to Chapter One: The Nemean Lion.")
+    alert("You may now proceed to Chapter One: Encounter on the Road")
 }
-
+function continueNemeanLion(){
+    $(document).ready(function() {
+        $('.chapter[data-type="CH01-2"]').on('click', function(){
+            $(this).toggleClass('active');
+        });
+    });
+    alert("You may now proceed to Chapter One: The Nemean Lion")
+}
 //#endregion
 
 //Utility Functions
 //#region 
 function d20(){
     let diceRoll = Math.floor(Math.random() * 21)
+    return diceRoll
+}
+function d10(){
+    let diceRoll = Math.floor(Math.random() * 11)
     return diceRoll
 }
 function canPummel(defender){
@@ -98,8 +98,8 @@ let hook = new Attacks("left hook", 10, "From the side, the left hook connects w
 let tackle = new Attacks("tackle", 8, "Take the opponent by surprise and tackle them to the ground!", "pinning")
 let pummel = new Attacks("pummel", 15, "While the opponent is down, you take advantage of them!", null)
 //armed attacks
-let slash = new Attacks("slash", 15, "A blade slashes across the opponent's torso!", "bleeding")
-let stab = new Attacks("stab", 20, "The blade pierces the skin and goes deep, leaving a puncture wound.", "bleeding")
+let slash = new Attacks("slash", 10, "A blade slashes across the opponent's torso!", "bleeding")
+let stab = new Attacks("stab", 15, "The blade pierces the skin and goes deep, leaving a puncture wound.", "bleeding")
 //special attacks
 let strangle = new Attacks("strangle", 25, "That opponent never stood a change against the might!", null)
 
@@ -140,21 +140,28 @@ function determineAttacks(character){
     }
 }
 
-let herc = new Character("Heracles", "player", 30, 5, 15, 0, 0);
+function levelUp(character){
+    character.totalHP += 10;
+    character.hp = character.totalHP;
+    character.level += 1;
+
+}
+
+let herc = new Character("Heracles", "player", 35, 5, 15, 0);
 let impUnarmed = new Character("Underworld Imp","NPC", 5, 2, 5, 0);
 let impArmed = new Character ("Underworld Imp", "armedNPC", 8, 4, 8, 5)
 impArmed.weapon = dagger;
 let crab = new Character("Giant Crab", "NPC", 15, 0, 8, 15);
-let wildMenOne = new Character("Unknown Fighter","armedNPC", 10, 5, 2, 5, 0);
+let wildMenOne = new Character("Unknown Fighter","armedNPC", 5, 5, 1, 0);
 wildMenOne.weapon = club;
-let wildMenTwo = new Character("Unknown Armed Peasant", "NPC", 0, 5, 1, 3, 0);
+let wildMenTwo = new Character("Unknown Armed Peasant", "NPC", 0, 5, 1, 0);
 //#endregion
 
 //Flavor Text
 //#region 
 function opponentSeemsBloody(target){
     let bloodied = ""
-    if(target.hp == 0){
+    if(target.hp <= 0){
         bloodied = "The target has fallen and they are now dead."
     }
     else if(target.hp <= target.totalHP/4){
@@ -222,23 +229,12 @@ function chooseBasicAttack(attacker, target){
     }
     else{
         for(let i = 0; i < attacker.attackNames.length; i++){
-            if(attackChoice == attacker.attackNames[i].name){
+            if(attackChoice.toLowerCase() == attacker.attackNames[i].name){
                 let turnAttack = attacker.attackNames[i];
                 attacker['attack']=turnAttack
             }
         } 
     }  
-}
-function determineAttacks(character){
-    if(character.level == 1 && character.type == "player"){
-        character.attackNames = [punch, tackle, pummel]
-    }
-    if(character.type == "NPC"){
-        character.attackNames = [punch, tackle, hook]
-    }
-    if(character.type == "armedNPC"){
-        character.attackNames = [slash, stab]
-    }
 }
 function randomAttackNPC(computer, player){
     number = Math.floor(Math.random() * computer.attackNames.length);
@@ -252,12 +248,35 @@ function attackPhase(attacker, target){
     let computerDamage = randomAttackNPC(target, attacker);
     let bloodied = opponentSeemsBloody(target);
     alert(`You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
+    console.log(`Your damage dealt: ${attackerDamage} \nComputer damage Dealt: ${computerDamage} \nYour HP: ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
 }
 //#endregion
 
 //Nemean Lion
 //#region 
-
+function strangeMenCombat(player){
+    alert("The armed man sees that your intentions toward them are not pure and charges to attack you!")
+    while(wildMenOne.hp > 0 && player.hp > 0){
+        attackPhase(player, wildMenOne);
+    }
+    if(player.hp <= 0){
+        alert("You have died.  Thank you for attempting to play through this epic tale!  Please refresh or revist and try again one day.")
+        return;
+    }
+    else if(wildMenOne.hp <=0 && player.hp >0){
+        alert("Seeing his comrade fall in combat, another man attempts to attack you!")
+        while(wildMenTwo.hp>0 && player.hp>0){
+            attackPhase(player, wildMenTwo);
+        }
+        if(player.hp <= 0){
+            alert("You have died.  Thank you for attempting to play through this epic tale!  Please refresh or revist and try again one day.")
+        }
+        if(wildMenTwo.hp <=0){
+            alert("The second man was slain and the others in the group have fled, leaving you alone in the middle of a field.  You decide to investigate where they came from.")
+            onToNemeanLion(herc);
+        }
+    }
+}
 function strangeMenConversation(player){
     alert('"Ho, stranger!  We come from two days walk up north.  There\'s danger about up there!"');
     believe_men = promptFor("Do you believe the strangers and wish to continue speaking to them(yes)? Or do have a bad feeling them and want to attack (no)?", yesNo);
@@ -268,21 +287,23 @@ function strangeMenConversation(player){
         if(helpThem.toLowerCase() == "yes"){
             alert('"OH! Thank the Gods!  If you can help, that would be marvelous!" His exhaustion is momentarily replaced by relief and ecstacy.\n  However, it fades quickly.  "The creature that attacked our village was a hungry lion.  This wasn\'t your normal lion, though.  His fur seemed to be made of solid gold.  Some of the men, though, have heard whispers.  They\'ve heard this lion\'s fur cannot be penetrated by spear or shield.  One must kill him with only your bare hands.  Go in peace, stranger.');
             alert('You have unlocked the attack "strangle".');
-            player.attacks.push(strangle);
+            player.attackNames.push(strangle);
+            onToNemeanLion(herc)
         }
         else{
-            attackPhase(player, wildMenOne);
+            alert("You decide that they don't look the sort to be trusted and shift your posture to a fighting stance.")
+         strangeMenCombat(player);
         }
     }
     else{
-        attackPhase(player, wildMenOne);
+        alert("You decide that they don't look the sort to be trusted and shift your posture to a fighting stance.")
+     strangeMenCombat(player);
     }
 }
-
-//#endregion
-
-//Game Flow
-//#region 
+function onToNemeanLion(player){
+    levelUp(herc)
+    continueNemeanLion()
+}
 
 //#endregion
 
