@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel = "stylesheet" href="stylesheet.css">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script type = "text/javascript" src = "JSRPGec.js"></script>
+    <title>The Partial Tales of Heracles</title>\
+</head>
+<body>
+    <div id="title">
+        <h1>The Partial Tales of Heracles</h1>
+        <p> </p>
+    </div>
+
+    <div class = "accordion">
+        <div class = "welcome">
+            <div class = "label">Welcome</div>
+            <div class ="desc">
+                <img src=../pictures/heracles.jpg>
+                <p>Welcome!  Many have heard the feats of Hercules and many have scribed the feats in various ways.  I'm here to tell you today that you MAY not have heard it right.  We're going to adventure through some of the 12 Labours that Hercules endured for his cousin, King Eurystheus.</p>
+                <p>You you will have to use buttons to control the flow of things.  Do you understand?  Select yes or no.</p>
+                <p><center> <button class="buttonOne" type="button" onClick="welcomeYes()">Yes</button>
+                            <button class="buttonTwo" type="button" onClick = "welcomeNo()">No</button></center></p>
+            </div>
+        </div>
+        <div class = "chapter" data-type ="CH00">
+            <div class = "label">Introduction</div>
+            <div class = "desc">
+                <img src=../pictures/theTwelveLabors.jpg>
+                <p>Heracles had a cousin, Eurystheus, the king of Tiryns.  Some rumors say that Eurystheus imposed 12 Labours onto Heracles to atone for sins, but other rumors say it was familial rivalry.  No one knows for sure.</p>
+                <p>You, reader, are going to help Heracles overcome some of those trials!</p>
+                <p>The first trial that Eurystheus gave to Heracles was to defeat the Nemean Lion.  The Nemean lion is said to have impenetrable fur...</p>
+                <p>You, as Heracles, set out to find a way to defeat the legendary Nemean Lion.</p>
+                <p><center><button class="buttonOne" type="button" onClick = "continueToChapterOne()">Continue</button></center>
+            </div>
+        </div>
+        <div class = "chapter" data-type = "CH01">
+            <div class = "label">Chapter One: The Nemean Lion</div>
+            <div class = "desc">
+                <img src=../pictures/wildMen.jpg>
+                <p>While out seeking answers as to where the Nemean Lion is or how you may defeat them, you encounter a group of people.  Only two of them look armed but they look ragged, as if they have been on the road in poor conditions.  You know that it's overcast, muddy, and allover not pleasant so it doesn't take one long to look this way.  </p>
+                <p>Will you attack the armed members of the group or will you attempt to talk to them?</p>
+                <p>Attacks currently available to Heracles are punch and tackle.  You may also attempt to pummel your opponent if they're pinned.</p>
+                <p><center> <button class="buttonOne" type="button" onClick = "attackPhase(herc, wildMenOne)">Attack Them!</button>
+                            <button class="buttonTwo" type="button" onClick = "strangeMenConversation(herc)">Talk to Them</button></center></p>
+            </div>
+        </div>
+        <div class = "chapter"></div>
+        <div class = "chapter"></div>
+    </div>
+
+</body>
+</html>

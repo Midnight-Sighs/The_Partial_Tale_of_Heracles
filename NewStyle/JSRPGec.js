@@ -3,13 +3,42 @@
 // Features:  
 // As a developer, I want to make at least five commits with descriptive messages. 
 // As a user, I want an engaging story to be told using alerts. 
-// XXXAs a user, I want Hercules (and each enemy), to have health, attack power, and an array of attack names saved in an object literal.
-// As a user, I want the ability to select Hercules’ attack using a menu prompt.
-// As a user, I want the foe’s attack to be chosen at random.
+// XXX As a user, I want Hercules (and each enemy), to have health, attack power, and an array of attack names saved in an object literal.
+// XXX As a user, I want the ability to select Hercules’ attack using a menu prompt.
+// XXX As a user, I want the foe’s attack to be chosen at random.
 // As a user, I want the results of each attack to be logged in the console. 
 // As a developer, I want to use an Attack() function that will terminate when Hercules or an enemy’s health reaches zero. 
 // As a developer, I want my RunGame() function to call my other functions in a logical order that will determine game flow.
 // As a developer, I want all of my functions to have a Single Responsibility. Remember, each function should do just one thing! 
+
+//HTML Functions
+//#region 
+$(document).ready(function() {
+    $('.welcome').on('click', function(){
+        $(this).toggleClass('active');
+    });
+});
+function welcomeYes(){
+    $(document).ready(function() {
+        $('.chapter[data-type="CH00"]').on('click', function(){
+            $(this).toggleClass('active');
+        });
+    });
+    alert("You may now proceed to the Introduction.")
+}
+function welcomeNo(){
+    alert("We're sorry that you think you don't understand how to use yes and no buttons!  However, you just pushed the \"no\" button!  I think you know more than you give yourself credit for.  You should try that again.")
+}
+function continueToChapterOne(){
+    $(document).ready(function() {
+        $('.chapter[data-type="CH01"]').on('click', function(){
+            $(this).toggleClass('active');
+        });
+    });
+    alert("You may now proceed to Chapter One: The Nemean Lion.")
+}
+
+//#endregion
 
 //Utility Functions
 //#region 
@@ -17,15 +46,21 @@ function d20(){
     let diceRoll = Math.floor(Math.random() * 21)
     return diceRoll
 }
-function welcomeNo(){
-    alert("We're sorry that you think you don't understand how to use yes and no buttons!  However, you just pushed the no button!  I think you should try that again.")
+
+//#endregion
+
+//Weapons
+//#region 
+class Weapons{
+    constructor(name, damage){
+        this.name = name;
+        this.damage = damage;
+    }
 }
-function welcomeYes(){
-    window.location.href = "storyOne.html";
-}
-function loadPageChapterOneEncounterOne(){
-    window.location.href = "../HTMLpages/chapterOneWildMen.html"
-}
+
+let sword = new Weapons("Sword", 5);
+let club = new Weapons("Club", 3);
+let mace = new Weapons("Mace", 8);
 
 //#endregion
 
@@ -43,7 +78,6 @@ class Character {
         this.initiative = Math.round(this.speed / 2);
         this.defense = Math.round(this.vitality + this.armor);
         this.attackNames = [];
-        this.attack = ""
         this.weapon = null;
         this.status = null;
         this.level = 1;
@@ -114,21 +148,6 @@ let strangle = new Attacks("Strangle", 25, "That opponent never stood a change a
 
 //#endregion
 
-//Weapons
-//#region 
-class Weapons{
-    constructor(name, damage){
-        this.name = name;
-        this.damage = damage;
-    }
-}
-
-let sword = new Weapons("Sword", 5);
-let club = new Weapons("Club", 3);
-let mace = new Weapons("Mace", 8);
-
-//#endregion
-
 //Armor
 //#region 
 class Armors{
@@ -178,7 +197,9 @@ function chooseBasicAttack(attacker, target){
     else{
         for(let i = 0; i < attacker.attackNames.length; i++){
             if(attackChoice == attacker.attackNames.name){
-                attacker.attack = attackChoice;
+                let turnAttack = attacker.attackNames[i];
+                attacker.attack = turnAttack;
+                return attacker.attack
             }
         } 
     }  
