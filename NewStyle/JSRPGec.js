@@ -1,8 +1,8 @@
-// $(document).ready(function() {
-//     $('.chapter[data-type=CH01-2]').on('click', function(){
-//         $(this).toggleClass('active');
-//     });
-// });
+$(document).ready(function() {
+    $('.chapter[data-type=CH01-2]').on('click', function(){
+        $(this).toggleClass('active');
+    });
+});
 
 //HTML Functions
 //#region 
@@ -37,6 +37,13 @@ function continueNemeanLion(){
         });
     });
     alert("You may now proceed to Chapter One: The Nemean Lion")
+}
+function disableButtonTwoChapterOneOne(){
+    $(document).ready(function() {
+    $('.buttonTwo[data-type="CH01-1"]').on('click', function(){
+        $(this).toggleClass('disabled');
+    });
+});
 }
 //#endregion
 
@@ -93,7 +100,7 @@ class Attacks{
     }
 }
 //basic attacks/NPC attacks
-let punch = new Attacks("jab", 5, "A wound up uppercut surprises the opponent with a shot to the chin!", null)
+let jab = new Attacks("jab", 5, "A wound up uppercut surprises the opponent with a shot to the chin!", null)
 let hook = new Attacks("left hook", 10, "From the side, the left hook connects with the opponents skull!", null)
 let tackle = new Attacks("tackle", 8, "Take the opponent by surprise and tackle them to the ground!", "pinning")
 let pummel = new Attacks("pummel", 15, "While the opponent is down, you take advantage of them!", null)
@@ -117,11 +124,13 @@ class Character {
         this.attackPower = attackPower;
         this.armor = armor;
         this.totalHP = Math.round(this.vitality + 25);
-        this.hp = this.totalHP
+        this.hp = this.totalHP;
         this.initiative = Math.round(this.speed / 2);
         this.defense = Math.round(this.vitality + this.armor);
-        this.attackNames = []
-        determineAttacks(this)
+        this.attackNames = [];
+        determineAttacks(this);
+        this.equippedArmor = [];
+        this.hasShield = false;
         this.weapon = null;
         this.status = null;
         this.attack = null;
@@ -130,10 +139,10 @@ class Character {
 
 function determineAttacks(character){
     if(character.level == 1 && character.type == "player"){
-        character.attackNames = [punch, tackle, pummel]
+        character.attackNames = [jab, tackle, pummel]
     }
     if(character.type == "NPC"){
-        character.attackNames = [punch, tackle, hook]
+        character.attackNames = [jab, tackle, hook]
     }
     if(character.type == "armedNPC"){
         character.attackNames = [slash, stab]
@@ -144,7 +153,7 @@ function levelUp(character){
     character.totalHP += 10;
     character.hp = character.totalHP;
     character.level += 1;
-
+    console.log(`Your new total HP is ${character.totalHP}.  Your current HP is ${character.hp}.  Your new level is ${character.level}.`)
 }
 
 let herc = new Character("Heracles", "player", 35, 5, 15, 0);
@@ -186,12 +195,51 @@ class Armors{
     constructor(name, armorValue){
         this.name = name;
         this.armorValue = armorValue;
+        this.type = ""
     }
 }
 
-let bracers = new Armors("Bracers", 5);
-let chestPlate = new Armors("Chest Plate", 15);
-let helm = new Armors("Helm", 8);
+let bracers = new Armors("bracers", 5);
+let chestPlate = new Armors("chest plate", 15);
+let helm = new Armors("helm", 8);
+let shieldOfTheGods = new Armors("shield of the Gods", 20);
+shieldOfTheGods.type = "shield";
+
+function hasShield(character){
+    for(i = 0; i<character.equippedArmor.length; i++){
+        if(character.equippedArmor[i].type == "shield"){
+            character.hasShield = true;
+        }
+    }
+}
+function shieldDefense(character){
+    hasShield(character)
+    if(character.hasShield == true){
+        shieldBonus *=2
+    }
+    return shieldBonus;
+}
+function determineArmorDefenseOnDefend(character){
+    bonusArmor = 0;
+    for(i=0; 0<character.equippedArmor.lenth; i++){
+        bonusArmor += character.equippedArmor[i].armorValue;
+    }
+    shieldBonus = shieldDefense(character);
+    bonusArmor +=shieldBonus;
+}
+function determineArmoredDefense(character){
+    bonusArmor = 0;
+    for(i=0; 0<character.equippedArmor.lenth; i++){
+        bonusArmor += character.equippedArmor[i].armorValue;
+    }
+}
+function displayArmor(character){
+    let printArmor = "Equipped armor is: "
+        for(let i = 0; i<character.equippedArmor.length; i++){
+            printArmor += `- ${character.equippedArmor[i].name} `
+        }
+        return printArmor;
+}
 //#endregion
 
 //Attack Functions
@@ -209,8 +257,34 @@ function calculateDamage(attacker, target){
         pinOpponent(target);
     }
     damage = attacker.attackPower + weaponDamage + attacker.attack.attackPower;
-    target.hp -= damage;
-    return damage;
+    armorBonus = determineArmoredDefense(target);
+    totalDamage = damage - (target.armorValue+armorBonus);
+    if(totalDamage <0){
+        totalDamage =0;
+    }
+    target.hp -= totalDamage;
+    return totalDamage;
+}
+function calculateDamageWithDefense(attacker, target){
+    let damage = 0;
+    let weaponDamage = 0;
+    if(attacker.weapon == null){
+        weaponDamage = 0;
+    }
+    else{
+        weaponDamage = attacker.weapon.damage;
+    }
+    if(attacker.attack.status == "pinning"){
+        pinOpponent(target);
+    }
+    damage = attacker.attackPower + weaponDamage + attacker.attack.attackPower;
+    armorBonus = determineArmoredDefenseOnDefend(target);
+    totalDamage = damage - (target.armorValue+armorBonus);
+    if(totalDamage =0){
+        totalDamage = 0;
+    }
+    target.hp -= totalDamage;
+    return totalDamage;
 }
 function displayAttackNames(attacker){
     let displayAttacks = "Available Attacks are: "
@@ -242,6 +316,12 @@ function randomAttackNPC(computer, player){
     computerDamage = calculateDamage(computer, player);
     return computerDamage;
 }
+function randomAttackWithDefenseNPC(computer, player){
+    number = Math.floor(Math.random() * computer.attackNames.length);
+    computer.attack = computer.attackNames[number];
+    computerDamage = calculateDamageWithDefense(computer, player);
+    return computerDamage;
+}
 function attackPhase(attacker, target){
     chooseBasicAttack(attacker, target);
     let attackerDamage = calculateDamage(attacker, target);
@@ -250,12 +330,24 @@ function attackPhase(attacker, target){
     alert(`You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
     console.log(`Your damage dealt: ${attackerDamage} \nComputer damage Dealt: ${computerDamage} \nYour HP: ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
 }
+function attackPhaseWithDefend(attacker, target){
+    attackOrDefend = promptFor("Would you like to attack or defend?", attackDefend);
+    if(attackOrDefend.toLowerCase() == "attack"){
+        attackPhase(attacker, target);
+    }
+    if(attackOrDefend.toLowerCase()=="defend"){
+        let computerDamage = randomAttackWithDefenseNPC(target, attacker);
+        alert(`As you defended, you dealt no damage this turn.  Your opponent did ${computerDamage} to you.`)
+        console.log(`Your current HP is ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
+    }
+}
+
 //#endregion
 
 //Nemean Lion
 //#region 
 function strangeMenCombat(player){
-    alert("The armed man sees that your intentions toward them are not pure and charges to attack you!")
+    alert("The armed man sees that your intentions toward them are not pure and charges to attack you!");
     while(wildMenOne.hp > 0 && player.hp > 0){
         attackPhase(player, wildMenOne);
     }
@@ -264,15 +356,15 @@ function strangeMenCombat(player){
         return;
     }
     else if(wildMenOne.hp <=0 && player.hp >0){
-        alert("Seeing his comrade fall in combat, another man attempts to attack you!")
+        alert("Seeing his comrade fall in combat, another man attempts to attack you!");
         while(wildMenTwo.hp>0 && player.hp>0){
             attackPhase(player, wildMenTwo);
         }
         if(player.hp <= 0){
-            alert("You have died.  Thank you for attempting to play through this epic tale!  Please refresh or revist and try again one day.")
+            alert("You have died.  Thank you for attempting to play through this epic tale!  Please refresh or revist and try again one day.");
         }
         if(wildMenTwo.hp <=0){
-            alert("The second man was slain and the others in the group have fled, leaving you alone in the middle of a field.  You decide to investigate where they came from.")
+            alert("The second man was slain and the others in the group have fled, leaving you alone in the middle of a field.  You decide to investigate where they came from.");
             onToNemeanLion(herc);
         }
     }
@@ -288,7 +380,7 @@ function strangeMenConversation(player){
             alert('"OH! Thank the Gods!  If you can help, that would be marvelous!" His exhaustion is momentarily replaced by relief and ecstacy.\n  However, it fades quickly.  "The creature that attacked our village was a hungry lion.  This wasn\'t your normal lion, though.  His fur seemed to be made of solid gold.  Some of the men, though, have heard whispers.  They\'ve heard this lion\'s fur cannot be penetrated by spear or shield.  One must kill him with only your bare hands.  Go in peace, stranger.');
             alert('You have unlocked the attack "strangle".');
             player.attackNames.push(strangle);
-            onToNemeanLion(herc)
+            onToNemeanLion(herc);
         }
         else{
             alert("You decide that they don't look the sort to be trusted and shift your posture to a fighting stance.")
@@ -303,6 +395,23 @@ function strangeMenConversation(player){
 function onToNemeanLion(player){
     levelUp(herc)
     continueNemeanLion()
+}
+function observeNemeanLion(player){
+    alert("You stealthily creep up closer to the Lion so you can get a better look at it.  You watch in awe at what would make a normal man cry as a pack of wild dogs think they can overtake the Lion.  With a roar and a few swipes of its mighty paws, the Lion quickly overcomes his foes.")
+    observePrompt = promptFor("Would you like to continue observing?  Yes or no?  If you select no, you will charge into battle.", yesNo)
+    if(observePrompt.toLowerCase() == "yes"){
+        investigateObject = promptFor("You shift a bit as your legs begin to cramp and in doing so, your knee nudges something very solid and very sharp.  Would you like to investigate it?", yesNo)
+        if(investigateObject.toLowerCase() == "yes"){
+            alert("Upon further investigation, you discover that your knee had encountered a very sturdy looking shield.  It looks old and worn, as if it were a family heirloom, but it looks as if it were crafted by the Gods themselves.")
+            takeShield = promptFor("Would you like to take the old shield?(yes) Or are you so sure of your strength that you don't need the battered looking thing?(no)", yesNo)
+            if(takeShield.toLowerCase() == "yes"){
+                alert("You have found the Shield of the Gods!  While old and battered, the sturdiness of it leads you to believe that it has protected many warriors.")
+                player.equippedArmor.push(shieldOfTheGods)
+                currentlyEquipped = displayArmor(player);
+                console.log(currentlyEquipped);
+            }
+        }
+    }
 }
 
 //#endregion
@@ -326,6 +435,15 @@ function yesNo(input){
       return false;
     }
   }
+
+function attackDefend(input){
+    if(input.toLowerCase() =="attack"||input.toLowerCase()=="defend"){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 function validAttackNames(input){
     if(input.toLowerCase() == "left hook" || input.toLowerCase() == "jab" || input.toLowerCase() == "tackle"||input.toLowerCase() == "pummel"||input.toLowerCase() == "slash"||input.toLowerCase() == "stab"||input.toLowerCase() == "strangle" ){

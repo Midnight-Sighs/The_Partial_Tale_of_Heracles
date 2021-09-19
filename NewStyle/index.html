@@ -20,10 +20,10 @@
             <div class = "label">Welcome</div>
             <div class ="desc">
                 <img src=../pictures/heracles.jpg>
-                <p>Welcome!  Many have heard the feats of Hercules and many have scribed the feats in various ways.  I'm here to tell you today that you MAY not have heard it right.  We're going to adventure through some of the 12 Labours that Hercules endured for his cousin, King Eurystheus.</p>
+                <p>Welcome!  Many have heard the feats of Heracles and many have scribed the feats in various ways.  I'm here to tell you today that you MAY not have heard it right.  We're going to adventure through some of the 12 Labours that Hercules endured for his cousin, King Eurystheus.</p>
                 <p>You you will have to use buttons to control the flow of things.  Do you understand?  Select yes or no.</p>
                 <p><center> <button class="buttonOne" type="button" onClick="welcomeYes()">Yes</button>
-                            <button class="buttonTwo" type="button" onClick = "welcomeNo()">No</button></center></p>
+                            <button class="buttonTwo" type="button" data-type="welcome" onClick = "welcomeNo()">No</button></center></p>
             </div>
         </div>
         <div class = "chapter" data-type ="CH00">
@@ -45,7 +45,7 @@
                 <p>Will you attack the members of the group that seem ready to fight or will you attempt to talk to them?  Only one of the men is armed, the other just looks the tough sort.</p>
                 <p>Attacks currently available to Heracles are jab and tackle.  You may also attempt to pummel your opponent if they're pinned.</p>
                 <p><center> <button class="buttonOne" type="button" onClick = "strangeMenCombat(herc, wildMenOne)">Attack Them!</button>
-                            <button class="buttonTwo" type="button" onClick = "strangeMenConversation(herc)">Talk to Them</button></center></p>
+                            <button class="buttonTwo" type="button" data-type = "CH01-1" onClick = "strangeMenConversation(herc)">Talk to Them</button></center></p>
             </div>
         </div>
         <div class = "chapter" data-type = "CH01-2">
@@ -55,7 +55,7 @@
                 <p>You feel invigorated from your fight.  The Gods smile upon you and renew your vigor for the coming challenges.</p>
                 <p>You went north to where the rag tag group of people came from.  There indeed used to be a village here.  And indeed, you see signs of a massive lion who has prowled the premise.  It only takes a few moments of investigating before you easily spot the lion in the distance.  Are you ready to fight or do you wish to observe?</p>
                 <p><center> <button class="buttonOne" type="button" onClick = "">Charge the Lion!!</button>
-                            <button class="buttonTwo" type="button" onClick = >Observe the Lion</button></center></p>
+                            <button class="buttonTwo" type="button" onClick ="observeNemeanLion(herc)" >Observe the Lion</button></center></p>
             </div>
         </div>
         <div class = "chapter"></div>
