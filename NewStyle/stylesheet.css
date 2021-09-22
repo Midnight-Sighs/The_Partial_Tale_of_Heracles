@@ -6,6 +6,8 @@
 
 html {
     background-color: black;
+    background-image: url(../pictures/arches.png);
+    background-size: cover
 }
 
 p {
@@ -35,7 +37,7 @@ p {
 }
 
 .chapter .desc{
-    background: black;
+    background: rgba(0, 0, 0, 0.75);
     overflow: hidden;
     padding: 0px 20px;
     max-height: 0px;
@@ -60,7 +62,7 @@ p {
 }
 
 .welcome .desc{
-    background: black;
+    background: rgba(0, 0, 0, 0.75);
     overflow: hidden;
     padding: 0px 20px;
     max-height: 0px;

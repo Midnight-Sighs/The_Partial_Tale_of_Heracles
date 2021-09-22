@@ -1,8 +1,8 @@
-$(document).ready(function() {
-    $('.chapter[data-type=CH01-2]').on('click', function(){
-        $(this).toggleClass('active');
-    });
-});
+// $(document).ready(function() {
+//     $('.chapter[data-type=CH01-2]').on('click', function(){
+//         $(this).toggleClass('active');
+//     });
+// });
 
 //HTML Functions
 //#region 
@@ -100,15 +100,20 @@ class Attacks{
     }
 }
 //basic attacks/NPC attacks
-let jab = new Attacks("jab", 5, "A wound up uppercut surprises the opponent with a shot to the chin!", null)
-let hook = new Attacks("left hook", 10, "From the side, the left hook connects with the opponents skull!", null)
-let tackle = new Attacks("tackle", 8, "Take the opponent by surprise and tackle them to the ground!", "pinning")
-let pummel = new Attacks("pummel", 15, "While the opponent is down, you take advantage of them!", null)
+let jab = new Attacks("jab", 5, "A wound up uppercut surprises the opponent with a shot to the chin!", null);
+let hook = new Attacks("left hook", 10, "From the side, the left hook connects with the opponents skull!", null);
+let tackle = new Attacks("tackle", 8, "Take the opponent by surprise and tackle them to the ground!", "pinning");
+let pummel = new Attacks("pummel", 15, "While the opponent is down, you take advantage of them!", null);
 //armed attacks
-let slash = new Attacks("slash", 10, "A blade slashes across the opponent's torso!", "bleeding")
-let stab = new Attacks("stab", 15, "The blade pierces the skin and goes deep, leaving a puncture wound.", "bleeding")
+let slash = new Attacks("slash", 10, "A blade slashes across the opponent's torso!", "bleeding");
+let stab = new Attacks("stab", 15, "The blade pierces the skin and goes deep, leaving a puncture wound.", "bleeding");
 //special attacks
-let strangle = new Attacks("strangle", 25, "That opponent never stood a change against the might!", null)
+let strangle = new Attacks("strangle", 25, "That opponent never stood a change against the might!", null);
+//creature attacks
+let swipe = new Attacks("swipe", 10, "The creatures swipes its class across its opponent!");
+let bite = new Attacks ("bite", 15, "The creatures grasps its opponent in its jaws and clamps down tight, tearing off a chunk of flesh.");
+let roar = new Attacks("roar", 3, "While a roar itself does not hurt an enemy, it throws them off guard.  In the heat of battle, the opponent becomes clumsy and injures themself.")
+
 
 //#endregion
 
@@ -139,13 +144,16 @@ class Character {
 
 function determineAttacks(character){
     if(character.level == 1 && character.type == "player"){
-        character.attackNames = [jab, tackle, pummel]
+        character.attackNames = [jab, tackle, pummel];
     }
     if(character.type == "NPC"){
-        character.attackNames = [jab, tackle, hook]
+        character.attackNames = [jab, tackle, hook];
     }
     if(character.type == "armedNPC"){
-        character.attackNames = [slash, stab]
+        character.attackNames = [slash, stab];
+    }
+    if(character.type == "Creature"){
+        character.attackNames = [swipe, bite, roar];
     }
 }
 
@@ -160,10 +168,11 @@ let herc = new Character("Heracles", "player", 35, 5, 15, 0);
 let impUnarmed = new Character("Underworld Imp","NPC", 5, 2, 5, 0);
 let impArmed = new Character ("Underworld Imp", "armedNPC", 8, 4, 8, 5)
 impArmed.weapon = dagger;
-let crab = new Character("Giant Crab", "NPC", 15, 0, 8, 15);
+let crab = new Character("Giant Crab", "Creature", 15, 0, 8, 15);
 let wildMenOne = new Character("Unknown Fighter","armedNPC", 5, 5, 1, 0);
 wildMenOne.weapon = club;
 let wildMenTwo = new Character("Unknown Armed Peasant", "NPC", 0, 5, 1, 0);
+let lion = new Character("Nemean Lion", "Creature", 200, 10, 15, 15);
 //#endregion
 
 //Flavor Text
@@ -204,6 +213,8 @@ let chestPlate = new Armors("chest plate", 15);
 let helm = new Armors("helm", 8);
 let shieldOfTheGods = new Armors("shield of the Gods", 20);
 shieldOfTheGods.type = "shield";
+let lionHide = new Armors("hide of the Nemean Lion",25);
+lion.equippedArmor = lionHide;
 
 function hasShield(character){
     for(i = 0; i<character.equippedArmor.length; i++){
@@ -215,23 +226,31 @@ function hasShield(character){
 function shieldDefense(character){
     hasShield(character)
     if(character.hasShield == true){
-        shieldBonus *=2
+        let shieldBonus = true;
+        return shieldBonus;
     }
-    return shieldBonus;
 }
 function determineArmorDefenseOnDefend(character){
     bonusArmor = 0;
     for(i=0; 0<character.equippedArmor.lenth; i++){
         bonusArmor += character.equippedArmor[i].armorValue;
     }
-    shieldBonus = shieldDefense(character);
-    bonusArmor +=shieldBonus;
+    let shieldBonus = shieldDefense(character);
+    if(shieldBonus = true){
+        bonusArmor *=2;
+    }
 }
 function determineArmoredDefense(character){
     bonusArmor = 0;
-    for(i=0; 0<character.equippedArmor.lenth; i++){
-        bonusArmor += character.equippedArmor[i].armorValue;
+    if(character.equippedArmor=[]){
+        bonusArmor = 0;
     }
+    else{
+        for(i=0; 0<character.equippedArmor.lenth; i++){
+        bonusArmor += character.equippedArmor[i].armorValue;
+        }
+    }
+    return bonusArmor;
 }
 function displayArmor(character){
     let printArmor = "Equipped armor is: "
@@ -258,7 +277,7 @@ function calculateDamage(attacker, target){
     }
     damage = attacker.attackPower + weaponDamage + attacker.attack.attackPower;
     armorBonus = determineArmoredDefense(target);
-    totalDamage = damage - (target.armorValue+armorBonus);
+    totalDamage = damage - (target.armor+armorBonus);
     if(totalDamage <0){
         totalDamage =0;
     }
@@ -278,8 +297,8 @@ function calculateDamageWithDefense(attacker, target){
         pinOpponent(target);
     }
     damage = attacker.attackPower + weaponDamage + attacker.attack.attackPower;
-    armorBonus = determineArmoredDefenseOnDefend(target);
-    totalDamage = damage - (target.armorValue+armorBonus);
+    armorBonus = determineArmorDefenseOnDefend(target);
+    totalDamage = damage - (target.armor+armorBonus);
     if(totalDamage =0){
         totalDamage = 0;
     }
@@ -300,6 +319,10 @@ function chooseBasicAttack(attacker, target){
     if(attackChoice.toLowerCase() == "pummel" && canPummel(target) == false){
         alert("This target is not pinned and cannot be pummeled.  Please select again.");
         chooseBasicAttack(attacker, target);
+    }
+    if(attackChoice.toLowerCase() == "strangle" && target.name == "Nemean Lion"){
+        attacker.attack = strangle;
+        return;
     }
     else{
         for(let i = 0; i < attacker.attackNames.length; i++){
@@ -327,7 +350,7 @@ function attackPhase(attacker, target){
     let attackerDamage = calculateDamage(attacker, target);
     let computerDamage = randomAttackNPC(target, attacker);
     let bloodied = opponentSeemsBloody(target);
-    alert(`You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
+    alert(`${attacker.attack.flavorText} You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
     console.log(`Your damage dealt: ${attackerDamage} \nComputer damage Dealt: ${computerDamage} \nYour HP: ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
 }
 function attackPhaseWithDefend(attacker, target){
@@ -337,8 +360,76 @@ function attackPhaseWithDefend(attacker, target){
     }
     if(attackOrDefend.toLowerCase()=="defend"){
         let computerDamage = randomAttackWithDefenseNPC(target, attacker);
-        alert(`As you defended, you dealt no damage this turn.  Your opponent did ${computerDamage} to you.`)
+        if(computerDamage <=0){
+            computerDamageDisplay = "You managed to block and evade all damage!"
+        }
+        else{
+            computerDamageDisplay = `Your opponent did ${computerDamage} to you.`
+        }
+
+        alert(`As you defended, you dealt no damage this turn.  ${computerDamageDisplay}`)
         console.log(`Your current HP is ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
+    }
+}
+function attackWithLionBossUnlockStrangle(attacker, target){
+    turn = 1;
+    while(turn<=5){
+        attackOrDefend = promptFor("Would you like to attack or defend?", attackDefend);
+        if(attackOrDefend.toLowerCase() == "attack"){
+            chooseBasicAttack(attacker, target)
+            if(attacker.attack.name == "strangle"){
+                attackerDamage = 115;
+                target.hp -= attackerDamage;
+                alert(`That was very effective against your opponent! `)
+                let computerDamage = randomAttackNPC(target, attacker);
+                let bloodied = opponentSeemsBloody(target);
+                alert(`${attacker.attack.flavorText} You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
+                console.log(`Your damage dealt: ${attackerDamage} \nComputer damage Dealt: ${computerDamage} \nYour HP: ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
+            }
+            else{
+                let attackerDamage = calculateDamage(attacker, target);
+                let computerDamage = randomAttackNPC(target, attacker);
+                let bloodied = opponentSeemsBloody(target);
+                alert(`${attacker.attack.flavorText} You did ${attackerDamage} to your opponent and they did ${computerDamage} to you.\n You currently have ${attacker.hp} health left. ${bloodied}`)
+                console.log(`Your damage dealt: ${attackerDamage} \nComputer damage Dealt: ${computerDamage} \nYour HP: ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
+            }
+        }
+        if(attackOrDefend.toLowerCase()=="defend"){
+            let computerDamage = randomAttackWithDefenseNPC(target, attacker);
+            if(computerDamage <=0){
+                computerDamageDisplay = "You managed to block and evade all damage!"
+            }
+            else{
+                computerDamageDisplay = `Your opponent did ${computerDamage} to you.`
+            }
+            alert(`As you defended, you dealt no damage this turn.  ${computerDamageDisplay}`)
+            console.log(`Your current HP is ${attacker.hp} out of ${attacker.totalHP}\n Computer HP: ${target.hp} out of ${target.totalHP}`)
+        }
+        if(attacker.hp <=0){
+            alert("you have died.  Thank you for playing.  We hope you enjoyed.  If you'd like to play again, please refresh this window.")
+            turn = 5;
+        }
+        if(target.hp <=0){
+            alert("You have slain the Lion!")
+            turn = 5;
+        }
+        if(turn == 3){
+            for(let i = 0; i<attacker.attackNames.length; i++){
+                if(attacker.attackNames[i] != strangle){
+                    noStrangle = true;
+                }
+                if(attacker.attackNames[i] == strangle){
+                    noStrangle = false;
+                    break;
+                }
+            }
+            if(noStrangle == true){
+                attacker.attackNames.push(strangle);
+                alert("In the midst of combat, you have an idea to defeat the lion.  While basic weapons will not penetrate it's hide, it still requires the ability to breathe....")
+                alert("You have unlocked the ability to strangle!")
+            }
+        }
+        turn++
     }
 }
 
@@ -413,7 +504,10 @@ function observeNemeanLion(player){
         }
     }
 }
-
+function attackNemeanLion(player, target){
+    alert("You charge at the Nemean Lion and try to take it off guard, but the Lion is swift and ready for you as you approach.  You two clash into battle.");
+    attackWithLionBossUnlockStrangle(player, target)
+}
 //#endregion
 
 //Validations
